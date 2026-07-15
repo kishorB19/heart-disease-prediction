@@ -1,0 +1,225 @@
+
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Heart Check — Simple</title>
+  <style>
+    :root{--bg:#f6f8ff;--card:#ffffff;--accent:#2563eb;--muted:#6b7280}
+    *{box-sizing:border-box}
+    body{margin:0;font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial;color:#0f172a;background:var(--bg)}
+    .wrap{max-width:520px;margin:40px auto;padding:18px}
+    .card{background:var(--card);border-radius:12px;padding:16px;box-shadow:0 8px 30px rgba(12,18,30,0.06)}
+    h1{margin:0;font-size:20px}
+    p.lead{margin:6px 0 14px;color:var(--muted);font-size:14px}
+    .row{display:flex;gap:8px;margin-bottom:10px}
+    .col{flex:1}
+    label{display:block;font-size:13px;margin-bottom:6px;font-weight:600}
+    input[type="number"]{width:100%;padding:9px;border:1px solid #e6e9ef;border-radius:8px;font-size:14px}
+    .radios{display:flex;gap:6px;flex-wrap:wrap}
+    .btns{display:flex;gap:8px;margin-top:12px}
+    button{flex:1;padding:10px;border-radius:9px;border:0;background:var(--accent);color:#fff;font-weight:700;cursor:pointer}
+    button.alt{background:#eef2ff;color:var(--accent);border:1px solid #dbe9ff}
+    .note{font-size:13px;color:var(--muted);margin-top:10px}
+    .result{margin-top:12px;padding:12px;border-radius:10px;font-weight:700}
+    .ok{background:#f0fff4;color:#047857}
+    .warn{background:#fff7ed;color:#a06500}
+    .small{font-size:13px;color:var(--muted)}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="card">
+      <h1>Heart Check — Simple Q&A</h1>
+      <p class="lead">Fill values and press <strong>Get Result</strong>.</p>
+
+      <div id="form">
+        <div class="row">
+          <div class="col">
+            <label for="age">Age</label>
+            <input id="age" type="number" min="1" max="120" placeholder="45">
+          </div>
+          <div class="col">
+            <label>Sex</label>
+            <div class="radios">
+              <label><input name="sex" type="radio" value="1"> Male</label>
+              <label><input name="sex" type="radio" value="0"> Female</label>
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col">
+            <label>Chest pain (cp)</label>
+            <div class="radios">
+              <label><input name="cp" type="radio" value="0"> 0</label>
+              <label><input name="cp" type="radio" value="1"> 1</label>
+              <label><input name="cp" type="radio" value="2"> 2</label>
+              <label><input name="cp" type="radio" value="3"> 3</label>
+            </div>
+          </div>
+          <div class="col">
+            <label for="trestbps">Resting BP</label>
+            <input id="trestbps" type="number" placeholder="120">
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col">
+            <label for="chol">Cholesterol</label>
+            <input id="chol" type="number" placeholder="230">
+          </div>
+          <div class="col">
+            <label>Fasting BS (fbs)</label>
+            <div class="radios">
+              <label><input name="fbs" type="radio" value="1"> Yes</label>
+              <label><input name="fbs" type="radio" value="0"> No</label>
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col">
+            <label>Resting ECG (restecg)</label>
+            <div class="radios">
+              <label><input name="restecg" type="radio" value="0"> 0</label>
+              <label><input name="restecg" type="radio" value="1"> 1</label>
+              <label><input name="restecg" type="radio" value="2"> 2</label>
+            </div>
+          </div>
+          <div class="col">
+            <label for="thalach">Max HR (thalach)</label>
+            <input id="thalach" type="number" placeholder="150">
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col">
+            <label>Exercise angina (exang)</label>
+            <div class="radios">
+              <label><input name="exang" type="radio" value="1"> Yes</label>
+              <label><input name="exang" type="radio" value="0"> No</label>
+            </div>
+          </div>
+          <div class="col">
+            <label for="oldpeak">Oldpeak (ST depression)</label>
+            <input id="oldpeak" type="number" step="0.1" placeholder="1.0">
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col">
+            <label>Slope (0=up,1=flat,2=down)</label>
+            <div class="radios">
+              <label><input name="slope" type="radio" value="0"> 0</label>
+              <label><input name="slope" type="radio" value="1"> 1</label>
+              <label><input name="slope" type="radio" value="2"> 2</label>
+            </div>
+          </div>
+          <div class="col">
+            <label for="ca">Major vessels (ca)</label>
+            <input id="ca" type="number" min="0" max="3" placeholder="0">
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col" style="flex:1">
+            <label>Thal (1=normal,2=fixed,3=reversible)</label>
+            <div class="radios">
+              <label><input name="thal" type="radio" value="1"> 1</label>
+              <label><input name="thal" type="radio" value="2"> 2</label>
+              <label><input name="thal" type="radio" value="3"> 3</label>
+            </div>
+          </div>
+          <div style="width:140px"></div>
+        </div>
+
+        <div class="btns">
+          <button id="submit">Get Result</button>
+          <button id="sample" class="alt">Fill Sample</button>
+        </div>
+
+        <div id="status" class="note"></div>
+        <div id="result" style="display:none"></div>
+      </div>
+
+     
+    </div>
+  </div>
+
+  <script>
+    const FEATURES = ['age','sex','cp','trestbps','chol','fbs','restecg','thalach','exang','oldpeak','slope','ca','thal'];
+
+    function getRadio(name){ const el = document.querySelector(`input[name="${name}"]:checked`); return el ? Number(el.value) : null; }
+
+    function readValues(){
+      const vals = [];
+      vals.push(Number(document.getElementById('age').value || 0));
+      vals.push(getRadio('sex') ?? 0);
+      vals.push(getRadio('cp') ?? 0);
+      vals.push(Number(document.getElementById('trestbps').value || 0));
+      vals.push(Number(document.getElementById('chol').value || 0));
+      vals.push(getRadio('fbs') ?? 0);
+      vals.push(getRadio('restecg') ?? 0);
+      vals.push(Number(document.getElementById('thalach').value || 0));
+      vals.push(getRadio('exang') ?? 0);
+      vals.push(Number(document.getElementById('oldpeak').value || 0));
+      vals.push(getRadio('slope') ?? 0);
+      vals.push(Number(document.getElementById('ca').value || 0));
+      vals.push(getRadio('thal') ?? 0);
+      return vals;
+    }
+
+    function showStatus(text, err=false){
+      const s = document.getElementById('status');
+      s.textContent = text;
+      s.style.color = err ? '#b91c1c' : '#374151';
+    }
+
+    document.getElementById('sample').addEventListener('click', ()=>{
+      document.getElementById('age').value = 62;
+      document.querySelector('input[name="sex"][value="1"]').checked = true;
+      document.querySelector('input[name="cp"][value="0"]').checked = true;
+      document.getElementById('trestbps').value = 140;
+      document.getElementById('chol').value = 268;
+      document.querySelector('input[name="fbs"][value="0"]').checked = true;
+      document.querySelector('input[name="restecg"][value="0"]').checked = true;
+      document.getElementById('thalach').value = 160;
+      document.querySelector('input[name="exang"][value="0"]').checked = true;
+      document.getElementById('oldpeak').value = 3.6;
+      document.querySelector('input[name="slope"][value="1"]').checked = true;
+      document.getElementById('ca').value = 0;
+      document.querySelector('input[name="thal"][value="2"]').checked = true;
+      showStatus('Sample filled. Press Get Result.');
+      document.getElementById('result').style.display = 'none';
+    });
+
+    document.getElementById('submit').addEventListener('click', async ()=>{
+      const features = readValues();
+      if (features[0] <= 0){ showStatus('Enter a valid age.', true); return; }
+      showStatus('Sending to server...');
+      document.getElementById('result').style.display = 'none';
+
+      try {
+        const res = await fetch('/predict', {
+          method: 'POST',
+          headers: {'Content-Type':'application/json'},
+          body: JSON.stringify({features})
+        });
+        const data = await res.json();
+        if (!res.ok){ showStatus(data.error || 'Server error', true); document.getElementById('result').innerHTML = `<div class="result warn">${data.error||'Server error'}</div>`; document.getElementById('result').style.display='block'; return; }
+        const cls = data.prediction === 1 ? 'warn' : 'ok';
+        const text = data.prediction === 1 ? 'Likely heart disease (model=1)' : 'Unlikely heart disease (model=0)';
+        document.getElementById('result').innerHTML = `<div class="result ${cls}">${text}<div style="font-weight:700;margin-top:8px">Model accuracy: ${data.accuracy}</div></div>`;
+        document.getElementById('result').style.display = 'block';
+        showStatus('Result received.');
+      } catch (err) {
+        showStatus('Cannot contact server. Is app.py running?', true);
+        document.getElementById('result').innerHTML = `<div class="result warn">Cannot contact server. Start Python server (python app.py).</div>`;
+        document.getElementById('result').style.display = 'block';
+      }
+    });
+  </script>
+</body>
+</html>
