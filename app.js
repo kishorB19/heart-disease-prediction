@@ -124,6 +124,9 @@ function mockFetch(url, options = {}) {
 async function smartFetch(url, options = {}) {
   try {
     const res = await fetch(url, options);
+    if (res.status === 404) {
+      return mockFetch(url, options);
+    }
     return res;
   } catch (err) {
     return mockFetch(url, options);
