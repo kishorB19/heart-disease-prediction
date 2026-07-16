@@ -46,7 +46,7 @@ function mockFetch(url, options = {}) {
   }
 
   if (url === '/api/login') {
-    localSession = { username: body.username, role: body.role || 'doctor' };
+    localSession = { username: body.username, role: body.role || selectedPortal || 'doctor' };
     localStorage.setItem('localSession', JSON.stringify(localSession));
     return makeResponse({ success: true });
   }
