@@ -65,7 +65,6 @@ function mockFetch(url, options = {}) {
       return makeResponse({ success: true });
     }
     return makeResponse({ error: 'Invalid username or password' }, 401);
-  });
   }
 
   if (url === '/api/logout') {
