@@ -1,4 +1,4 @@
- 
+
 function clientSidePredict(features) {
   const [age, sex, cp, trestbps, chol, fbs, restecg, thalach, exang, oldpeak, slope, ca, thal] = features;
   let score = -2.0;
@@ -46,10 +46,13 @@ function mockFetch(url, options = {}) {
   }
 
   if (url === '/api/register') {
+    if (!body.password || body.password.length < 8) {
+      return makeResponse({ error: 'Password must be at least 8 characters long.' }, 400);
+    }
     const users = JSON.parse(localStorage.getItem('localUsers') || '[]');
-    const exists = users.some(u => u.username === body.username);
+    const exists = users.some(u => u.username.toLowerCase() === body.username.toLowerCase());
     if (exists) {
-      return makeResponse({ error: 'Username already exists' }, 400);
+      return makeResponse({ error: 'Username already exists. Please choose another.' }, 400);
     }
     users.push({ username: body.username, password: body.password, role: body.role });
     localStorage.setItem('localUsers', JSON.stringify(users));
@@ -244,6 +247,11 @@ let currentUser = null;
 
       if (!username || !password) {
         showAuthAlert('Username and password are required.');
+        return;
+      }
+
+      if (isRegisterMode && password.length < 8) {
+        showAuthAlert('Password must be at least 8 characters long.');
         return;
       }
 
