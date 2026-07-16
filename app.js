@@ -45,14 +45,27 @@ function mockFetch(url, options = {}) {
     return makeResponse({ logged_in: false });
   }
 
-  if (url === '/api/login') {
-    localSession = { username: body.username, role: body.role || selectedPortal || 'doctor' };
-    localStorage.setItem('localSession', JSON.stringify(localSession));
+  if (url === '/api/register') {
+    const users = JSON.parse(localStorage.getItem('localUsers') || '[]');
+    const exists = users.some(u => u.username === body.username);
+    if (exists) {
+      return makeResponse({ error: 'Username already exists' }, 400);
+    }
+    users.push({ username: body.username, password: body.password, role: body.role });
+    localStorage.setItem('localUsers', JSON.stringify(users));
     return makeResponse({ success: true });
   }
 
-  if (url === '/api/register') {
-    return makeResponse({ success: true });
+  if (url === '/api/login') {
+    const users = JSON.parse(localStorage.getItem('localUsers') || '[]');
+    const user = users.find(u => u.username === body.username && u.password === body.password);
+    if (user) {
+      localSession = { username: user.username, role: user.role || selectedPortal || 'doctor' };
+      localStorage.setItem('localSession', JSON.stringify(localSession));
+      return makeResponse({ success: true });
+    }
+    return makeResponse({ error: 'Invalid username or password' }, 401);
+  });
   }
 
   if (url === '/api/logout') {
@@ -126,6 +139,8 @@ async function smartFetch(url, options = {}) {
   if (isStaticHosting) {
     return mockFetch(url, options);
   }
+  return fetch(url, options);
+}
   try {
     const res = await fetch(url, options);
     return res;
