@@ -138,8 +138,6 @@ async function smartFetch(url, options = {}) {
   if (isStaticHosting) {
     return mockFetch(url, options);
   }
-  return fetch(url, options);
-}
   try {
     const res = await fetch(url, options);
     return res;
