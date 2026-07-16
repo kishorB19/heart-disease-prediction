@@ -1,4 +1,4 @@
-
+ 
 function clientSidePredict(features) {
   const [age, sex, cp, trestbps, chol, fbs, restecg, thalach, exang, oldpeak, slope, ca, thal] = features;
   let score = -2.0;
