@@ -122,11 +122,12 @@ function mockFetch(url, options = {}) {
 }
 
 async function smartFetch(url, options = {}) {
+  const isStaticHosting = window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1';
+  if (isStaticHosting) {
+    return mockFetch(url, options);
+  }
   try {
     const res = await fetch(url, options);
-    if (res.status === 404) {
-      return mockFetch(url, options);
-    }
     return res;
   } catch (err) {
     return mockFetch(url, options);
